@@ -5,13 +5,13 @@ const router = Express.Router();
 
 let users = [
   {
-    firstName: "Hamza",
-    lastName: "bouchtarate",
-    age: 25,
+    firstName: "name1",
+    lastName: "lastName1",
+    age: 33,
   },
   {
-    firstName: "Ziyad",
-    lastName: "bouchtarate",
+    firstName: "name1",
+    lastName: "lastName2",
     age: 6,
   },
 ];
@@ -20,7 +20,7 @@ let users = [
 router.get("/", (request, response) => {
   console.log(users);
 
-  response.send(`<h1>Hello User</h1>`);
+  response.send("Hello User");
 });
 
 router.post("/", (request, response) => {
@@ -33,7 +33,7 @@ router.post("/", (request, response) => {
   users.push(userWithId);
 
   console.log(users);
-  response.send(`<h1>Your request was added successfully</h1>`);
+  response.send("Your request was added successfully");
 });
 
 router.get("/:id", (request, response) => {
@@ -47,15 +47,22 @@ router.get("/:id", (request, response) => {
 
 router.delete("/:id", (request, response) => {
   const { id } = request.params;
-
   // const foundUser = users.find((user) => user.id === id);
-
   users = users.filter((user) => user.id !== id);
-
   console.log(users);
   response.send(`User with the id ${id} was deleted successfully`);
 });
 
+router.put("/:id", (request, response) => {
+  const { id } = request.params;
+  const { firstName, lastName, age } = request.body;
+  const user = users.find((user) => user.id === id);
+  user.firstName = firstName;
+  user.lastName = lastName;
+  user.age = age;
+  response.send(`User with the id ${id} has been updated`);
+  console.log(user);
+});
 router.patch("/:id", (request, response) => {
   const { id } = request.params;
   const { firstName, lastName, age } = request.body;
@@ -67,5 +74,4 @@ router.patch("/:id", (request, response) => {
   response.send(`User with the id ${id} has been updated`);
   console.log(user);
 });
-
 export default router;
